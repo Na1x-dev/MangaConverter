@@ -1,0 +1,106 @@
+body{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+    font-size: calc(20*100vw/1920);
+    user-select: none;
+}
+
+.main-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('/img/background.jpeg')  no-repeat center center;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+}
+
+.main-header{
+    margin-bottom: 100px;
+    font-size: calc(36*100vw/1920);
+    text-align: center;
+    width: 50vw;
+    background-color: #00aaa2;
+    padding: 10px;
+    border-radius: 20px;
+    border: 3px solid #fff;
+}
+
+.form-upload{
+    height: auto;
+    width: 50vw;
+}
+
+.upload-loader__image{
+    width: 10vw;
+    pointer-events: none;
+}
+
+.drop-text-hint{
+    pointer-events: none;
+}
+
+.drop-zone{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center ;
+    height: 50vh;
+    border: 3px solid #fff;
+    border-radius: 20px;
+    width: 50vw;
+    transition-duration: 0.5s;
+    font-weight: 700;
+    text-align: center;
+}
+
+.drop-zone._active{
+    /* color: #c56fff; */
+    background-color: #00aaa2;
+}
+
+.drop-zone-label{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    font-weight: 700;
+}
+
+.input-files-text{
+    margin: 20px;
+    margin-top: 35px;
+   
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+*/} 
+
+.input-files{
+    font-size: calc(20*100vw/1920);
+    font-weight: 700;
+}
+
+.input-files::file-selector-button{
+    background-color: #00aaa2;
+    margin: 20px 20px 20px 0;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-family: "Montserrat";
+    transition-duration: 0.2s;
+}
+
+.input-files::file-selector-button:hover{
+    background-color: #008b85;
+    cursor: pointer;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url('/font/Montserrat-Regular.ttf');
+}

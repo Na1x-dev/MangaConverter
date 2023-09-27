@@ -3,8 +3,12 @@ import express from 'express';
 const app = express();
 const PORT = 3000;
 
+app.set('view engine', 'ejs');
+
+app.use(express.static('public'));
+
 app.get('/', (req, res) => {
-    res.send('Hi, Bro, Why Are You Gay?');
+    res.render('index');
 });
 
 app.listen(PORT, () => console.log(`The Server is running on port ${PORT}...`));
