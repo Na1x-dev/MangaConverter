@@ -11,8 +11,28 @@
 <body>
     <section class="main-section">
         <h1 class="main-header">Добро пожаловать в конвертер для контента сомнительного содержания</h1>
-
-        <form class="form-upload" id="uploadForm" method="post" enctype="multipart/form-data">
+        <div id="uploadFile_Loader" class="upload-zone">
+            <form class="form-upload" id="uploadForm" method="post" enctype="multipart/form-data">
+                <div class="upload-zone_dragover">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24" class="upload-loader__image">
+                        <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M12 12v9" />
+                        <path d="m16 16-4-4-4 4" />
+                    </svg>
+                    <p>Перетащите файлы сюда</p>
+                    <span class="form-upload__hint" id="hint"></span>
+                </div>
+                <label class="form-upload__label" for="uploadForm_file">
+                    <!-- <span class="form-upload__title">Или нажмите кнопку</span> -->
+                    <input class="form-upload__input" id="uploadForm_File" type="file" name="file_name" multiple
+                        aria-describedby="hint">
+                </label>
+                <div class="form-upload__container">
+                    <span class="form-upload__hint" id="uploadForm_Hint"></span>
+                </div>
+            </form>
+        </div>
+        <!-- <form class="form-upload" id="uploadForm" method="post" enctype="multipart/form-data">
             <div class="drop-zone">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round"
                     stroke-linejoin="round" stroke-width="1" viewBox="0 0 24 24" class="upload-loader__image">
@@ -28,7 +48,8 @@
             <div>
                 <span class="form-upload-hint" id="uploadFormHint"></span>
             </div>
-        </form>
+        </form> -->
+
     </section>
 
     <script src="/main.js"></script>
