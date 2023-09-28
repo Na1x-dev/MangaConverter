@@ -56,6 +56,7 @@ body{
     transition-duration: 0.5s;
     font-weight: 700;
     text-align: center;
+    z-index: 10;
 }
 
 .drop-zone._active{
