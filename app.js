@@ -2,7 +2,6 @@ import express from 'express';
 import multer from 'multer';
 import * as fs from "node:fs";
 import unzipper from 'unzipper';
-import imgToPDF from 'image-to-pdf'
 import path from 'node:path';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 
@@ -13,6 +12,7 @@ const PORT = 3000;
 let pdfDoc = 0;
 let pdfName = '';
 let zipArray = [];
+let greatJpgArray = [];
 
 app.set('view engine', 'ejs');
 
@@ -25,19 +25,16 @@ app.post('/upload', upload.array('files', 100), (req, res, next) => {
     zipArray.sort(compare);
     createPDFfile();
     openZipArray();
-    setInterval(() => {
-        clearUploads();
-        // res.download('output/' + pdfName + '.pdf');
-    }, 1000)
-    // clearUploads();
-
-
 })
 
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
     res.render('index');
 });
 
+app.get('/download', (req, res, next) => {
+    res.download('output/' + pdfName + '.pdf');
+    clearUploads();
+})
 
 app.listen(PORT, () => console.log(`The Server is running on port ${PORT}...`));
 
@@ -50,15 +47,30 @@ async function openZipArray() {
         let bufferArray = [];
         for (let jpegObj of jpegArray.files) {
             bufferArray.push(await jpegObj.buffer());
+            greatJpgArray.push(await jpegObj.buffer());
         }
         await addImgToPDF(bufferArray);
+        mangaToFolder();
     }
 
     const pdfBytes = await pdfDoc.save();
     await fs.promises.writeFile('output/' + pdfName.trim() + '.pdf', pdfBytes);
 }
 
+function mangaToFolder() {
+    fs.rmdir('output/' + pdfName, { recursive: true }, (err) => console.log(err));
+    setTimeout(() => {
+        fs.mkdir('output/' + pdfName, (err) => console.log(err));
+        let i = 0;
+        for (let jpgFile of greatJpgArray) {
+            fs.writeFile('output/' + pdfName + '/' + i + '.jpg', jpgFile, (err) => console.log(err));
+            i++;
+        }
+    }, 3000);
+}
+
 function findMangaName() {
+    pdfName = '';
     for (let match of zipArray[0].originalname.match(/[a-zA-Z]+ /g))
         pdfName += match;
     pdfName = pdfName.trimEnd();

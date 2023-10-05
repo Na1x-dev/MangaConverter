@@ -167,10 +167,19 @@ body{
     cursor: pointer;
   }
   
-  .form-upload__input::file-selector-button:hover {
+  .form-upload__input::file-selector-button:hover, .download-button:hover {
     background-color: #008b85;
     cursor: pointer;
     color: #fff;
+  }
+
+  .download-button{
+    color: #000;
+    background-color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 10px;
+    transition: background-color 0.2s linear;
   }
   
   .form-upload__container {
