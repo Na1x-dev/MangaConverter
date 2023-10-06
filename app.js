@@ -13,6 +13,7 @@ let pdfDoc = 0;
 let pdfName = '';
 let zipArray = [];
 let greatJpgArray = [];
+let greatJpgFileArray = [];
 
 app.set('view engine', 'ejs');
 
@@ -48,13 +49,15 @@ async function openZipArray() {
         for (let jpegObj of jpegArray.files) {
             bufferArray.push(await jpegObj.buffer());
             greatJpgArray.push(await jpegObj.buffer());
+            greatJpgFileArray.push(jpegObj);
         }
-        await addImgToPDF(bufferArray);
-        mangaToFolder();
-    }
+        mangaToFolder2(zip, bufferArray);
+        // await addImgToPDF(bufferArray);
 
-    const pdfBytes = await pdfDoc.save();
-    await fs.promises.writeFile('output/' + pdfName.trim() + '.pdf', pdfBytes);
+    }
+    // mangaToFolder();
+    // const pdfBytes = await pdfDoc.save();
+    // await fs.promises.writeFile('output/' + pdfName.trim() + '.pdf', pdfBytes);
 }
 
 function mangaToFolder() {
@@ -64,6 +67,19 @@ function mangaToFolder() {
         let i = 0;
         for (let jpgFile of greatJpgArray) {
             fs.writeFile('output/' + pdfName + '/' + i + '.jpg', jpgFile, (err) => console.log(err));
+            i++;
+        }
+    }, 3000);
+}
+
+function mangaToFolder2(zip, bufferArray) {
+    // fs.rmdir('output/' + pdfName, { recursive: true }, (err) => console.log(err));
+    setTimeout(() => {
+        if (!fs.existsSync('output/' + pdfName))
+            fs.mkdir('output/' + pdfName, (err) => console.log(err));
+        let i = 0;
+        for (let jpgFile of bufferArray) {
+            fs.writeFile('output/' + pdfName + '/' + getClearNumbersStr(zip) + ',' + i + '.jpg', jpgFile, (err) => console.log(err));
             i++;
         }
     }, 3000);
@@ -117,6 +133,6 @@ function compare(a, b) { //переделать
 }
 
 function getClearNumbersStr(a) {
-    let chaptersNumbers = a.originalname.match(/ \d+ /g);
+    let chaptersNumbers = a.originalname.match(/ \d+(\.\d+)? /g);
     return parseFloat(chaptersNumbers[chaptersNumbers.length - 1]);
 }
