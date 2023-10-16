@@ -60,6 +60,7 @@ async function openZipArray() {
 
     }
 
+    setTimeout(() => { createZipFolder(); }, 3500);
     // mangaToFolder();
     // const pdfBytes = await pdfDoc.save();
     // await fs.promises.writeFile('output/' + pdfName.trim() + '.pdf', pdfBytes);
@@ -88,7 +89,6 @@ function mangaToFolder2(zip, bufferArray) {
             i++;
         }
     }, 3000);
-    setTimeout(() => { createZipFolder(); }, 3500);
 }
 
 function findMangaName() {
@@ -131,9 +131,10 @@ async function addImgToPDF(images) {
 function createZipFolder() {
     let output = fs.createWriteStream('output/' + pdfName + '.zip');
     output.on('close', () => { console.log(archive.pointer()) });
-    archive.on('error', () => { console.log(err) });
+    archive.on('error', (err) => { console.log(err) });
     archive.pipe(output);
-    archive.directory('output/' + pdfName, pdfName).finalize();
+    archive.directory('output/' + pdfName, pdfName);
+    setTimeout(()=>{archive.finalize()}, 1000);
     // archive.append(fs.createReadStream('output/' + pdfName + '/1,0.jpg'), {name: 'output/' + pdfName + '/1,0.jpg'}).finalize();
 }
 
