@@ -4,10 +4,13 @@ import * as fs from "node:fs";
 import unzipper from 'unzipper';
 import path from 'node:path';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
+import archiver from 'archiver';
 
 const upload = multer({ dest: 'uploads/' });
 const app = express();
 const PORT = 3000;
+
+let archive = archiver('zip');
 
 let pdfDoc = 0;
 let pdfName = '';
@@ -33,11 +36,12 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/download', (req, res, next) => {
-    res.download('output/' + pdfName + '.pdf');
+    res.download('output/' + pdfName + '.zip');
     clearUploads();
 })
 
 app.listen(PORT, () => console.log(`The Server is running on port ${PORT}...`));
+
 
 async function openZipArray() {
     findMangaName();
@@ -55,6 +59,7 @@ async function openZipArray() {
         // await addImgToPDF(bufferArray);
 
     }
+
     // mangaToFolder();
     // const pdfBytes = await pdfDoc.save();
     // await fs.promises.writeFile('output/' + pdfName.trim() + '.pdf', pdfBytes);
@@ -83,6 +88,7 @@ function mangaToFolder2(zip, bufferArray) {
             i++;
         }
     }, 3000);
+    setTimeout(() => { createZipFolder(); }, 3500);
 }
 
 function findMangaName() {
@@ -120,6 +126,15 @@ async function addImgToPDF(images) {
             height,
         });
     }
+}
+
+function createZipFolder() {
+    let output = fs.createWriteStream('output/' + pdfName + '.zip');
+    output.on('close', () => { console.log(archive.pointer()) });
+    archive.on('error', () => { console.log(err) });
+    archive.pipe(output);
+    archive.directory('output/' + pdfName, pdfName).finalize();
+    // archive.append(fs.createReadStream('output/' + pdfName + '/1,0.jpg'), {name: 'output/' + pdfName + '/1,0.jpg'}).finalize();
 }
 
 function compare(a, b) { //переделать 
